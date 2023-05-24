@@ -1,0 +1,32 @@
+import IO from "IO"
+import Math from "Math"
+import Number from "Number"
+
+
+
+collatzStep :: Integer -> Integer
+collatzStep = (x) => (Math.mod(x, 2) != 0 ? 3 * x + 1 : Number.floatToInteger(x / 2))
+
+/*
+collatz :: Integer -> List Integer
+collatz = (a) => {
+  iter = (step, steps) => (
+    step == 1 ?
+      [...steps, 1] :
+      iter(collatzStep(step), [...steps, step])
+  )
+  return iter(a, [])
+}
+*/
+
+hex :: Integer -> String
+hex = (i) => #- i.toString(16) -#
+
+collatz :: Integer -> List Integer
+collatz = (step) => (step == 1 ? [1] : [step, ...collatz(collatzStep(step))])
+
+main = () => {
+  hail = #- Math.round(Math.random() * 1e10) -#
+  IO.trace("starting!", hail)
+  collatz(hail) |> map(hex) |> IO.trace("steps!")
+}

@@ -1,0 +1,23 @@
+import List from "List"
+
+
+
+inc :: Integer -> Integer
+inc = (a) => a + 1
+
+
+main :: List String -> {}
+main = () => {
+  items = List.range(0, 10000000)
+
+  pipe(
+    map(inc),
+    map(inc),
+    map(inc),
+    map(inc),
+    map(inc),
+    map(inc),
+    map(inc),
+    map(inc),
+  )(items)
+}

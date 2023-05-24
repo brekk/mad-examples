@@ -1,0 +1,79 @@
+import type { Maybe } from "Maybe"
+
+import Fn from "Function"
+import IO from "IO"
+import List from "List"
+import Math from "Math"
+import { Just, Nothing } from "Maybe"
+import Number from "Number"
+
+
+
+fucknuckle :: Integer -> List a -> List a
+sliceAround = (i, list) => [
+  ...(i != 0 ? List.slice(0, i, list) : []),
+  ...List.slice(i + 1, List.length(list), list),
+]
+
+// permute :: List Char -> List (List Char)
+// permute :: List (List a) -> List (List b)
+
+alias OneListToMany a = List a -> List (List a)
+
+combine :: List a -> Maybe a -> List a -> List a
+combine = (inner, ii, raw) => pipe(
+  List.length,
+  List.range(0),
+  map(
+    pipe(
+      List.nth($, inner),
+      (jj) => where([ii, jj]) {
+        [Just(x), Just(y)] =>
+          [x, y]
+
+        [Just(x), Nothing] =>
+          [x]
+
+        [Nothing, Just(x)] =>
+          [x]
+
+        _ =>
+          []
+      },
+      List.flatten,
+    ),
+  ),
+)(raw)
+
+// permute :: OneListToMany a
+permute = (list) => {
+  // go :: OneListToMany a
+  go = (inner) => pipe(
+    List.length,
+    // Fn.ifElse(
+    // Fn.either(Fn.equals(1), Fn.equals(0)),
+    // Fn.always([inner]),
+    pipe(
+      List.range(0),
+      chain(
+        (i) => pipe(
+          sliceAround(i),
+          go,
+          combine(inner, List.nth(i, inner)),
+        )(inner),
+      ),
+    ),
+  )(inner)
+  return go(list)
+}
+
+main = () => {
+  IO.trace("jump", sliceAround(2, ['h', 'o', 'o', 'r', 'a', 'y']))
+  // IO.trace("mute", permute(['h','o','o','r','a','y']))
+  input = [0, 1, 2, 3, 4, 5]
+  sliced = sliceAround(0, input)
+  IO.trace("heynow", sliced)
+  IO.trace("combine", combine(input, List.nth(0, input), sliced))
+  IO.trace("mute", permute(input))
+  // permute(['h','o','o','r','a','y'])
+}

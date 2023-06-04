@@ -9,71 +9,117 @@ import Number from "Number"
 
 
 
-fucknuckle :: Integer -> List a -> List a
+sliceAround :: Integer -> List a -> List a
 sliceAround = (i, list) => [
   ...(i != 0 ? List.slice(0, i, list) : []),
   ...List.slice(i + 1, List.length(list), list),
 ]
 
-// permute :: List Char -> List (List Char)
-// permute :: List (List a) -> List (List b)
 
-alias OneListToMany a = List a -> List (List a)
+// combine :: Maybe a -> List a -> List (List a)
+// combine = (nthIndex, list) => pipe(
+//   List.length,
+//   List.range(0),
+//   map(
+//     pipe(
+//       List.nth($, list),
+//       (j) => [nthIndex, j],
+//       where {
+//         [Just(x), Just(y)] =>
+//           [x, y]
 
-combine :: List a -> Maybe a -> List a -> List a
-combine = (inner, ii, raw) => pipe(
-  List.length,
-  List.range(0),
-  map(
-    pipe(
-      List.nth($, inner),
-      (jj) => where([ii, jj]) {
-        [Just(x), Just(y)] =>
-          [x, y]
+//         [Just(x), Nothing] =>
+//           [x]
 
-        [Just(x), Nothing] =>
-          [x]
+//         [Nothing, Just(x)] =>
+//           [x]
 
-        [Nothing, Just(x)] =>
-          [x]
+//         _ =>
+//           []
+//       },
+//     ),
+//   ),
+// )(list)
 
-        _ =>
-          []
-      },
-      List.flatten,
-    ),
-  ),
-)(raw)
 
-// permute :: OneListToMany a
+filterWithIndex :: (a -> Integer -> Boolean) -> List a -> List a
+export filterWithIndex = (f, list) => {
+  helper = (list_, index) => where(list_) {
+    [] =>
+      []
+
+    [a, ...xs] =>
+      (f(a, index) ? [a, ...helper(xs, index + 1)] : helper(xs, index + 1))
+  }
+
+  return helper(list, 0)
+}
+
+
+dropMany :: List Integer -> List a -> List a
+dropMany = (whichIndices, list) => filterWithIndex(
+  (_, idx) => !List.includes(idx, whichIndices),
+  list,
+)
+
+alternate :: Integer -> Integer -> List a -> List a
+alternate = (i, j, arr) => pipe(
+  map(List.nth($, arr)),
+  where {
+    [Just(a), Just(b)] =>
+      [a, b]
+
+    [Just(a), Nothing] =>
+      [a]
+
+    [Nothing, Just(a)] =>
+      [a]
+
+    _ =>
+      []
+  },
+  where {
+    [ii, jj] =>
+      List.mapWithIndex((x, idx) => (idx == i ? jj : idx == j ? ii : x), arr)
+
+    _ =>
+      []
+  },
+)([i, j])
+
 permute = (list) => {
   // go :: OneListToMany a
   go = (inner) => pipe(
     List.length,
-    // Fn.ifElse(
-    // Fn.either(Fn.equals(1), Fn.equals(0)),
-    // Fn.always([inner]),
-    pipe(
-      List.range(0),
-      chain(
-        (i) => pipe(
-          sliceAround(i),
-          go,
-          combine(inner, List.nth(i, inner)),
-        )(inner),
+    Fn.ifElse(
+      Fn.either(Fn.equals(1), Fn.equals(0)),
+      Fn.always([inner]),
+      pipe(
+        List.range(0),
+        chain(
+          (i) => pipe(
+            List.length,
+            List.range(0),
+            map((j) => alternate(i, j, inner)),
+          )(inner),
+        ),
       ),
     ),
+    List.uniqueBy((a, b) => Fn.equals(a, b)),
   )(inner)
   return go(list)
 }
 
 main = () => {
   IO.trace("jump", sliceAround(2, ['h', 'o', 'o', 'r', 'a', 'y']))
-  // IO.trace("mute", permute(['h','o','o','r','a','y']))
-  input = [0, 1, 2, 3, 4, 5]
-  sliced = sliceAround(0, input)
-  IO.trace("heynow", sliced)
-  IO.trace("combine", combine(input, List.nth(0, input), sliced))
-  IO.trace("mute", permute(input))
+  input = [0, 1, 2]
+  sliced = [1, 2]
+  // IO.trace("combine", combine(List.nth(0, input), sliced))
+  // IO.trace("mute", permute(input))
+  // ['s', 'h', 'i', 't', 'f', 'a', 'c', 'e']))
+  IO.trace("ugh", alternate(0, 3, ['s', 'h', 'i', 't', 'f', 'a', 'c', 'e']))
+  // IO.trace("mutepermay", permute(['s', 'h', 'i', 't', 'f', 'a', 'c', 'e']))
+  IO.trace("123", permute([1, 2, 3]))
+  // IO.trace("NO", dropMany([0, 3], ["s", "h", "i", "t", "f", "a", "c", "e"]))
   // permute(['h','o','o','r','a','y'])
 }

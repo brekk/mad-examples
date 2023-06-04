@@ -1,4 +1,5 @@
 import IO from "IO"
+import List from "List"
 import Math from "Math"
 import Number from "Number"
 
@@ -27,6 +28,7 @@ collatz = (step) => (step == 1 ? [1] : [step, ...collatz(collatzStep(step))])
 
 main = () => {
   hail = #- Math.round(Math.random() * 1e10) -#
+  // hail = 17
   IO.trace("starting!", hail)
-  collatz(hail) |> map(hex) |> IO.trace("steps!")
+  collatz(hail) |> IO.trace("steps!") |> List.length |> IO.trace("total")
 }

@@ -1,0 +1,10 @@
+import IO from "IO"
+
+
+
+nullary :: {} -> String
+nullary = () => "SHIT"
+
+main = () => {
+  IO.trace("HEX", nullary())
+}

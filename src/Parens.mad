@@ -1,0 +1,10 @@
+import IO from "IO"
+
+
+
+hex :: Integer -> String
+hex = (i) => #- i.toString(16) -#
+
+main = () => {
+  IO.trace("HEX", ((((((((((((((hex(1000))))))))))))))))
+}

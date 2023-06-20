@@ -6,9 +6,11 @@ main = () => {
   pipe(
     (raw) => pipe(
       (a) => a * 2,
+      (a) => a - 1,
       // (a) => a + 5,
       // (a) => a / 6,
-      (a) => a - 1,
+
+
     )(raw),
   )(2)
     |> IO.trace("input")

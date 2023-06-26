@@ -1,0 +1,5 @@
+greet :: String -> String -> String
+export greet = (expression, subject) => (
+  `${expression} ${subject == "Unknown" ? "Stranger" : subject}`
+)
+

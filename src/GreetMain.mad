@@ -1,0 +1,8 @@
+import IO from "IO"
+import { greet } from "./Greet"
+
+main = () => {
+  IO.log(greet("Hello", "World")) 
+  IO.log(greet("Hey", "Unknown"))
+}
+

@@ -1,0 +1,13 @@
+import IO from "IO"
+import List from "List"
+
+
+
+export type Example = Input(String) | Garbage
+
+noGarbo :: List Example -> List Example
+noGarbo = List.reject(where { _ => falseGarbage => true })
+
+main = () => {
+  noGarbo([Garbage, Garbage, Input("shit"), Garbage]) |> IO.trace("hey!")
+}

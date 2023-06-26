@@ -1,0 +1,21 @@
+import IO from "IO"
+import List from "List"
+
+
+
+fencer :: Integer -> Integer -> Integer
+fencer = (a, b) => #-{
+  return Math.round(Math.random() * a) + b
+}-#
+
+racingFencer :: Integer -> Integer -> Integer
+racingFencer = (a, b) => #- {
+  return Math.round(Math.random() * a) + b
+} -#
+
+fastRacingFencer :: Integer -> Integer -> Integer
+fastRacingFencer = (a, b) => #-                 {
+  return Math.round(Math.random() * a) + b
+}                           -#
+
+main = () => {}

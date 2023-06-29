@@ -1,0 +1,26 @@
+import IO from "IO"
+import List from "List"
+import { Just, Nothing } from "Maybe"
+
+
+
+numberRun = List.reduce(
+  (agg, _) => where(List.last(agg)) {
+    Just(x) =>
+      [...agg, x * 2]
+
+    Nothing =>
+      agg
+  },
+  [1],
+)
+
+main = () => {
+  a = numberRun(List.range(0, 5))
+  b = numberRun(List.range(0, 5))
+  c = numberRun(List.range(0, 5))
+  IO.trace("SAME?", { a, b, c })
+  numberRun(List.range(0, 5)) |> IO.trace("A")
+  numberRun(List.range(0, 5)) |> IO.trace("B")
+  numberRun(List.range(0, 5)) |> IO.trace("C")
+}

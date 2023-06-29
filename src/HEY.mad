@@ -16,30 +16,30 @@ sliceAround = (i, list) => [
 ]
 
 
-combine :: Maybe a -> List a -> List (List a)
-combine = (nthIndex, list) => pipe(
-  List.length,
-  List.range(0),
-  map(
-    pipe(
-      List.nth($, list),
-      (j) => [nthIndex, j],
-      where {
-        [Just(x), Just(y)] =>
-          [x, y]
+// combine :: Maybe a -> List a -> List (List a)
+// combine = (nthIndex, list) => pipe(
+//   List.length,
+//   List.range(0),
+//   map(
+//     pipe(
+//       List.nth($, list),
+//       (j) => [nthIndex, j],
+//       where {
+//         [Just(x), Just(y)] =>
+//           [x, y]
 
-        [Just(x), Nothing] =>
-          [x]
+//         [Just(x), Nothing] =>
+//           [x]
 
-        [Nothing, Just(x)] =>
-          [x]
+//         [Nothing, Just(x)] =>
+//           [x]
 
-        _ =>
-          []
-      },
-    ),
-  ),
-)(list)
+//         _ =>
+//           []
+//       },
+//     ),
+//   ),
+// )(list)
 
 
 filterWithIndex :: (a -> Integer -> Boolean) -> List a -> List a
@@ -91,21 +91,19 @@ permute = (list) => {
   // go :: OneListToMany a
   go = (inner) => pipe(
     List.length,
-    Fn.ifElse(
-      Fn.either(Fn.equals(1), Fn.equals(0)),
-      Fn.always([inner]),
-      pipe(
-        List.range(0),
-        chain(
-          (i) => pipe(
-            List.length,
-            List.range(0),
-            map((j) => alternate(i, j, inner)),
-          )(inner),
-        ),
+    // Fn.ifElse(
+    // Fn.either(Fn.equals(1), Fn.equals(0)),
+    // Fn.always([inner]),
+    pipe(
+      List.range(0),
+      map(
+        (i) => pipe(
+          List.length,
+          List.range(0),
+          (j) => alternate(i, j, inner),
+        )(arr),
       ),
     ),
-    List.uniqueBy((a, b) => Fn.equals(a, b)),
   )(inner)
   return go(list)
 }
@@ -114,12 +112,10 @@ main = () => {
   IO.trace("jump", sliceAround(2, ['h', 'o', 'o', 'r', 'a', 'y']))
   input = [0, 1, 2]
   sliced = [1, 2]
-  IO.trace("combine", combine(List.nth(0, input), sliced))
+  // IO.trace("combine", combine(List.nth(0, input), sliced))
   // IO.trace("mute", permute(input))
   // ['s', 'h', 'i', 't', 'f', 'a', 'c', 'e']))
   IO.trace("ugh", alternate(0, 3, ['s', 'h', 'i', 't', 'f', 'a', 'c', 'e']))
-  // IO.trace("mutepermay", permute(['s', 'h', 'i', 't', 'f', 'a', 'c', 'e']))
-  IO.trace("123", permute([1, 2, 3]))
   // IO.trace("NO", dropMany([0, 3], ["s", "h", "i", "t", "f", "a", "c", "e"]))
   // permute(['h','o','o','r','a','y'])
 }

@@ -1,0 +1,12 @@
+import IO from "IO"
+
+// name :: String
+name = "Bark Obama"
+
+// age :: String
+age = "Number"
+
+main = () => {
+  value = { name, age }
+  IO.trace("VALUE", value)
+}

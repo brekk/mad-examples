@@ -20,9 +20,6 @@ collatz = (a) => {
 }
 */
 
-hex :: Integer -> String
-hex = (i) => #- i.toString(16) -#
-
 collatz :: Integer -> List Integer
 collatz = (step) => (step == 1 ? [1] : [step, ...collatz(collatzStep(step))])
 

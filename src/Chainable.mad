@@ -1,0 +1,79 @@
+import type { Either } from "Either"
+
+import Dictionary from "Dictionary"
+import { Left, Right } from "Either"
+import { always } from "Function"
+import IO from "IO"
+import List from "List"
+import { Just, Nothing } from "Maybe"
+
+
+
+K = always
+
+__add :: Float -> Float -> Float
+__add = (x, y) => x + y
+
+__multiply :: Float -> Float -> Float
+__multiply = (x, y) => x * y
+
+__divide :: Float -> Float -> Float
+__divide = (x, y) => y / x
+
+__subtract :: Float -> Float -> Float
+__subtract = (x, y) => y - x
+
+alias Functions = List #[String, Float -> Float]
+
+
+// come back to this def
+// chainWrap :: Functions -> Either String (Float -> List #[String, List a] -> Float)
+chainWrap = (fns) => {
+  // uhhh, stuff some stuff in stuff
+  applicator = (init, list) => pipe(
+    List.reduce((prev, step) => step(prev), init),
+  )(list)
+  // dict = Dictionary.fromList(fns)
+  return pipe(
+    Right,
+  )(applicator)
+}
+
+main = () => {
+  // chainWrap([
+  //   #["add", __add],
+  //   #["multiply", __multiply],
+  //   #["divide", __divide],
+  //   #["subtract", __subtract],
+  // ])
+
+  chained = pipe(
+    Dictionary.fromList,
+    (dict) => pipe(
+      IO.trace("encarta!"),
+      map(
+        (fn) => pipe(
+          fn,
+          IO.trace("zipslap"),
+          K(dict),
+        ),
+      ),
+    )(dict),
+  )([#["add", __add], #["multiply", __multiply], #["divide", __divide], #["subtract", __subtract]])
+  pipe(
+    Dictionary.get("add"),
+    where {
+      Just(x) =>
+        pipe(
+          IO.trace("RAW"),
+          K(100),
+        )(x(10.0))
+
+      // x(1, 2)
+
+      Nothing =>
+        100
+    },
+    IO.trace("add"),
+  )(chained)
+}

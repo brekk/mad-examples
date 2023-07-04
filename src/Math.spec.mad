@@ -1,0 +1,14 @@
+import Athmay from "Math"
+import Number from "Number"
+import { assertEquals, test } from "Test"
+
+
+
+test(
+  "Math.random",
+  (_) => {
+    x = Number.floatToInteger(Athmay.round(Athmay.random() * 100))
+    x = 5
+    return assertEquals(x, x)
+  },
+)

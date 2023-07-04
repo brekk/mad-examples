@@ -1,3 +1,4 @@
+import { identity } from "Function"
 import IO from "IO"
 import List from "List"
 import { Just, Nothing } from "Maybe"
@@ -5,22 +6,33 @@ import { Just, Nothing } from "Maybe"
 
 
 numberRun = List.reduce(
-  (agg, _) => where(List.last(agg)) {
-    Just(x) =>
-      [...agg, x * 2]
+  (agg, _) => pipe(
+    List.last,
+    where {
+      Just(x) =>
+        List.concat(agg, [x])
 
-    Nothing =>
-      agg
-  },
+      Nothing =>
+        agg
+    },
+  )(agg),
   [1],
 )
 
 main = () => {
-  a = numberRun(List.range(0, 5))
-  b = numberRun(List.range(0, 5))
-  c = numberRun(List.range(0, 5))
+  x = List.range(0, 5)
+  a = numberRun(x)
+  IO.trace("A.length", List.length(a))
+  b = numberRun(x)
+  IO.trace("B.length", List.length(b))
+  c = numberRun(x)
+  IO.trace("C.length", List.length(c))
   IO.trace("SAME?", { a, b, c })
-  numberRun(List.range(0, 5)) |> IO.trace("A")
-  numberRun(List.range(0, 5)) |> IO.trace("B")
-  numberRun(List.range(0, 5)) |> IO.trace("C")
+  numberRun(x) |> IO.trace("A")
+  numberRun(x) |> IO.trace("B")
+  numberRun(x) |> IO.trace("C")
+  IO.trace("LIST>RANGE>RAGE", List.range(0, 5))
+  IO.trace("X", x)
+  IO.trace("A / B / C", [a, b, c])
+  IO.trace("LENGTHS", map(List.length)([a, b, c]))
 }

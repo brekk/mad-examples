@@ -1,0 +1,19 @@
+import IO from "IO"
+import String from "String"
+
+
+
+charCodeAt :: String -> Integer -> Integer
+export charCodeAt = (s, i) => #- s.charCodeAt(i) -#
+
+fromCharCode :: List Integer -> String
+export fromCharCode = (codes) => #- String.fromCharCode(...__listToJSArray__(codes)) -#
+
+main = () => {
+  pipe(
+    map(charCodeAt("hey there")),
+    IO.trace("what up"),
+    fromCharCode,
+    IO.trace("doop"),
+  )([0, 1, 2, 3, 4])
+}

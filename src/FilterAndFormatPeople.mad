@@ -1,0 +1,34 @@
+import IO from "IO"
+import List from "List"
+import String from "String"
+
+
+
+alias Person = { firstName :: String, lastName :: String }
+
+filterByLastName :: String -> List Person -> List Person
+filterByLastName = (lastName, list) => List.filter(
+  (x) => String.toLower(x.lastName) == String.toLower(lastName),
+  list,
+)
+
+printFullName :: Person -> String
+printFullName = (person) => `${person.firstName} ${person.lastName}`
+
+printPeopleWithLastName = (lastName, list) => pipe(
+  filterByLastName(lastName),
+  map(printFullName),
+)(list)
+
+main = () => {
+  // super reasonable data and names, people are weird
+  people = [
+    { age: 25, firstName: "Alice", lastName: "Cool" },
+    { age: 25, firstName: "Bob", lastName: "Cool" },
+    { age: 25, firstName: "Christopher", lastName: "Uncool" },
+    { age: 25, firstName: "Delphine", lastName: "Uncool" },
+    { age: 25, firstName: "Elena", lastName: "Uncool" },
+    { age: 25, firstName: "Frederick", lastName: "Uncool" },
+  ]
+  printPeopleWithLastName("cool", people) |> IO.trace("The cool folks!")
+}

@@ -1,0 +1,97 @@
+import IO from "IO"
+import Math from "Math"
+import Number from "Number"
+
+
+
+type Temperature = Celsius(Float) | Fahrenheit(Float) | Kelvin(Float)
+
+C_TO_K = 273.15
+
+precision :: Float -> Float -> Float
+precision = (digits, x) => pipe(
+  Math.pow(10),
+  (m) => Math.round(m * x) / m,
+)(digits)
+
+
+fToC :: Temperature -> Temperature
+fToC = (t) => where(t) {
+  Fahrenheit(f) =>
+    Celsius((f - 32) * (5 / 9))
+
+  _ =>
+    t
+}
+
+cToF :: Temperature -> Temperature
+cToF = (t) => where(t) {
+  Celsius(c) =>
+    Fahrenheit(c * (9 / 5) + 32)
+
+  _ =>
+    t
+}
+
+cToK :: Temperature -> Temperature
+cToK = (t) => where(t) {
+  Celsius(c) =>
+    Kelvin(c + C_TO_K)
+
+  _ =>
+    t
+}
+
+kToC :: Temperature -> Temperature
+kToC = (t) => where(t) {
+  Kelvin(k) =>
+    Celsius(k - C_TO_K)
+
+  _ =>
+    t
+}
+
+kToF :: Temperature -> Temperature
+kToF = pipe(
+  kToC,
+  cToF,
+)
+
+fToK :: Temperature -> Temperature
+fToK = pipe(
+  fToC,
+  cToK,
+)
+
+tempMap = (fn, t) => where(t) {
+  Fahrenheit(x) =>
+    Fahrenheit(fn(x))
+
+  Celsius(x) =>
+    Celsius(fn(x))
+
+  Kelvin(x) =>
+    Kelvin(fn(x))
+}
+
+roundTempToPrecision :: Float -> Temperature -> Temperature
+roundTempToPrecision = (p, t) => tempMap(precision(p), t)
+
+roundTemp = roundTempToPrecision(2.0)
+
+main = () => {
+  pipe(
+    fToK,
+    IO.trace("KELVIN"),
+    roundTemp,
+    IO.trace("ROUND KELVIN"),
+    kToC,
+    roundTemp,
+    IO.trace("CELSIUS"),
+    cToF,
+    roundTemp,
+    IO.trace("FAHRENHEIT"),
+  )(Fahrenheit(72.0))
+
+  IO.trace("PRECISION?", precision(2.0, 3.1415926535897932384626433))
+}

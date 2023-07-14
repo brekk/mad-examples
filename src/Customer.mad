@@ -1,0 +1,29 @@
+import IO from "IO"
+import List from "List"
+
+
+
+type User = Customer(Integer, String) | PotentialUser
+
+filterById :: Integer -> List User -> List User
+export filterById = (id, users) => List.filter(
+  where {
+    Customer(customerId, _) =>
+      customerId == id
+
+    PotentialUser =>
+      false
+  },
+)(users)
+
+main = () => {
+  users = [
+    Customer(1, "Andrew"),
+    Customer(2, "Beth"),
+    Customer(3, "Clive"),
+    Customer(4, "David"),
+    Customer(101, "Convenient, eh?"),
+  ]
+  matcher = filterById(101)
+  matcher(users) |> IO.trace("what say you?")
+}

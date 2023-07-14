@@ -57,6 +57,7 @@ kToF = pipe(
   cToF,
 )
 
+
 fToK :: Temperature -> Temperature
 fToK = pipe(
   fToC,
@@ -94,4 +95,5 @@ main = () => {
   )(Fahrenheit(72.0))
 
   IO.trace("PRECISION?", precision(2.0, 3.1415926535897932384626433))
+  // IO.trace("32", Celsius(32))
 }

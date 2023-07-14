@@ -1,0 +1,18 @@
+import List from "List"
+
+
+
+type User = Customer(Integer, String) | PotentialUser
+
+filterById :: Integer -> List User -> List User
+export filterById = (id, users) => List.filter(
+  where {
+    Customer(customerId, _) =>
+      customerId == id
+
+    PotentialUser =>
+      false
+  },
+)(users)
+
+main = () => {}

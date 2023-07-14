@@ -4,7 +4,7 @@ import String from "String"
 
 
 
-alias Person = { firstName :: String, lastName :: String }
+alias Person = { age :: Integer, firstName :: String, lastName :: String }
 
 filterByLastName :: String -> List Person -> List Person
 filterByLastName = (lastName, list) => List.filter(
@@ -23,12 +23,12 @@ printPeopleWithLastName = (lastName, list) => pipe(
 main = () => {
   // super reasonable data and names, people are weird
   people = [
-    { age: 25, firstName: "Alice", lastName: "Cool" },
-    { age: 25, firstName: "Bob", lastName: "Cool" },
-    { age: 25, firstName: "Christopher", lastName: "Uncool" },
-    { age: 25, firstName: "Delphine", lastName: "Uncool" },
-    { age: 25, firstName: "Elena", lastName: "Uncool" },
-    { age: 25, firstName: "Frederick", lastName: "Uncool" },
+    { age: 50, firstName: "Alice", lastName: "Cool" },
+    { age: 50, firstName: "Bob", lastName: "Cool" },
+    { age: 50, firstName: "Christopher", lastName: "Uncool" },
+    { age: 50, firstName: "Delphine", lastName: "Uncool" },
+    { age: 50, firstName: "Elena", lastName: "Uncool" },
+    { firstName: "Frederick", lastName: "Uncool", age: 50 },
   ]
   printPeopleWithLastName("cool", people) |> IO.trace("The cool folks!")
 }

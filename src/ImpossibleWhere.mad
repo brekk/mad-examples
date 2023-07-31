@@ -1,0 +1,17 @@
+export type Regex = Regex(String, String) | InvalidRegex
+
+UnflaggedRegex :: String -> Regex
+export UnflaggedRegex = (x) => Regex(x, "")
+
+search :: Regex -> String -> List String
+export search = (rg, input) => where(rg) {
+  Regex(pattern, flags) =>
+    #[pattern, input]
+
+  UnflaggedRegex(pattern) =>
+    #[pattern, input]
+
+  InvalidRegex =>
+    #["???", "???"]
+}
+main = () => {}

@@ -1,0 +1,33 @@
+import __Math from "Math"
+
+
+
+minimum :: Integer -> Integer -> Integer
+export minimum = (m, x) => x < m ? m : x
+
+isEven :: Integer -> Boolean
+export isEven = (x) => __Math.mod(x, 2) == 0
+
+makeOdd :: Integer -> Integer
+export makeOdd = (x) => isEven(x) ? x + 1 : x
+
+atan2 :: Number a => a -> a -> a
+export atan2 = (a, b) => #- Math.atan2(a, b) -#
+
+DEGREES :: Float
+DEGREES = #- 180 / Math.PI -#
+
+rad2deg :: Float -> Float
+export rad2deg = (rad) => rad * DEGREES
+
+deg2rad :: Float -> Float
+export deg2rad = (deg) => deg / DEGREES
+
+cos :: Number a => a -> a
+export cos = (x) => #- Math.cos(x) -#
+
+sin :: Number a => a -> a
+export sin = (x) => #- Math.sin(x) -#
+
+abs :: Float -> Float
+export abs = (x) => x < 0 ? x * -1 : x

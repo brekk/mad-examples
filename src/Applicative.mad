@@ -1,10 +1,7 @@
-import type { Maybe } from "Maybe"
-
 import { liftA2 } from "Applicative"
+import Fn from "Function"
 import IO from "IO"
-import Integer from "Integer"
 import { Just, Nothing } from "Maybe"
-import Number from "Number"
 
 
 
@@ -22,6 +19,12 @@ main = () => {
     map((a, b) => a + b),
     ap($, h3),
     IO.trace("a + b"),
+  )(h1)
+
+  pipe(
+    map((a, b) => a + b),
+    Fn.flip(ap)(h3),
+    IO.trace("a + b with flip(ap)"),
   )(h1)
 
   pipe(

@@ -1,0 +1,7 @@
+import { assertEquals, test } from "Test"
+
+
+
+thingThatReturnsAList = () => [1, 2]
+
+test("barf", () => assertEquals([1, 2, 3], thingThatReturnsAList()))

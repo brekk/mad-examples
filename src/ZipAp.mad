@@ -1,0 +1,30 @@
+import Ap from "Applicative"
+import File from "File"
+import IO from "IO"
+import List from "List"
+import { Just, Nothing } from "Maybe"
+import String from "String"
+import Wish from "Wish"
+
+
+
+traceDrop :: Show a => String -> a -> {}
+traceDrop = (tag, x) => {
+  IO.trace(tag, x)
+}
+
+isntEmpty :: String -> Boolean
+isntEmpty = (x) => !String.isEmpty(x)
+
+cleanLines :: String -> List String
+cleanLines = pipe(
+  String.lines,
+  List.filter(isntEmpty),
+)
+
+main = () => {
+  pipe(
+    Ap.liftA2((a, b) => List.zip(cleanLines(a), cleanLines(b)), File.read("./src/zip-b.txt")),
+    Wish.fulfill(traceDrop("bad"), traceDrop("good")),
+  )(File.read("./src/zip-a.txt"))
+}

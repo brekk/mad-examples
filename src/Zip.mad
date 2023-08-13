@@ -1,0 +1,49 @@
+import File from "File"
+import IO from "IO"
+import List from "List"
+import { Just, Nothing } from "Maybe"
+import String from "String"
+import Wish from "Wish"
+
+
+
+traceDrop :: Show a => String -> a -> {}
+traceDrop = (tag, x) => {
+  IO.trace(tag, x)
+}
+
+main = () => {
+  // List.zip(["a", "b", "c"], [1, 2, 3, 4]) |> IO.trace("zip?")
+  // List.zip(List.range(0, 100000), List.range(100000, 200000)) |> IO.trace("zip?")
+  pipe(
+    map(File.read),
+    map(
+      pipe(
+        map(
+          pipe(
+            String.lines,
+            List.filter((s) => !String.isEmpty(s)),
+          ),
+        ),
+      ),
+    ),
+    Wish.parallel,
+    map(
+      (inputOutput) => {
+        input = List.nth(0, inputOutput)
+        output = List.nth(1, inputOutput)
+        return where(#[input, output]) {
+          #[Just(_i), Just(_o)] =>
+            List.zip(_i, _o)
+
+          #[Just(_), Nothing] =>
+            []
+
+          #[Nothing, _] =>
+            []
+        }
+      },
+    ),
+    Wish.fulfill(traceDrop("bad"), traceDrop("good")),
+  )(["./src/zip-a.txt", "./src/zip-b.txt"])
+}

@@ -1,0 +1,15 @@
+import File from "File"
+import IO from "IO"
+import Wish from "Wish"
+
+
+
+main = () => {
+  pipe(
+    IO.trace("input..."),
+    File.read,
+    IO.trace("ok..."),
+    // fulfill returns void! easy to forget
+    Wish.fulfill((b) => { IO.trace("bad", b) }, (g) => { IO.trace("good", g) }),
+  )("./File.mad")
+}

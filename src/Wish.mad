@@ -1,0 +1,11 @@
+import IO from "IO"
+import Wish from "Wish"
+
+
+
+main = () => {
+  pipe(
+    // fulfill returns void! easy to forget
+    Wish.fulfill((b) => { IO.trace("bad", b) }, (g) => { IO.trace("good", g) }),
+  )(Wish.good("hey now"))
+}

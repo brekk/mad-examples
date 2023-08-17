@@ -1,0 +1,109 @@
+import Compare from "Compare"
+import Dict from "Dictionary"
+import Fn from "Function"
+import IO from "IO"
+import List from "List"
+import { Just, Nothing, fromMaybe } from "Maybe"
+import String from "String"
+import Tuple from "Tuple"
+
+
+
+groupBy :: Comparable b => (a -> b) -> List a -> Dictionary b (List a)
+export groupBy = (pred, list) => List.reduce(
+  (dx, _item) => {
+    key = pred(_item)
+    return pipe(
+      Dict.get($, dx),
+      Fn.ifElse(
+        where {
+          Just(_) =>
+            true
+
+          Nothing =>
+            false
+        },
+        (_) => Dict.update((x) => [...x, _item], key, dx),
+        (_) => Dict.insert(key, [_item], dx),
+      ),
+    )(key)
+  },
+  Dict.empty,
+)(list)
+
+countValues :: Dictionary a (List b) -> Dictionary a Integer
+countValues = Dict.mapWithKey((key, value) => List.length(value))
+
+histogramBy :: Comparable b => (a -> b) -> List a -> Dictionary b Integer
+histogramBy = (pred, xs) => pipe(
+  groupBy(pred),
+  countValues,
+)(xs)
+
+// rarestBy :: Comparable b => (a -> b) -> List a -> List b
+rarestBy = (pred, list) => pipe(
+  groupBy(pred),
+  (dx) => pipe(
+    countValues,
+    Dict.toList,
+    List.sortBy((a, b) => a == b ? Compare.EQ : Compare.GT),
+    map(where { #[a, z] => #[z, a] }),
+    List.sortBy(
+      (a, z) => pipe(
+        where {
+          #[i, ii] =>
+            i == ii ? Compare.EQ : Compare.GT
+        },
+      )(#[a, z]),
+    ),
+    (lx) => pipe(
+      List.nth(0),
+      IO.trace("WHAT?"),
+      map(Tuple.snd),
+      // (v) => pipe(
+      //   List.filter(
+      //     pipe(
+      //       Tuple.snd,
+      //       Fn.equals(v),
+      //     ),
+      //   )(lx),
+      // )
+
+
+
+
+
+    )(lx),
+  )(dx),
+)(list)
+
+main = () => {
+  alphabetWithAges = [
+    { name: "a", age: 10 },
+    { name: "b", age: 20 },
+    { name: "c", age: 10 },
+    { name: "d", age: 21 },
+    { name: "e", age: 10 },
+    { name: "f", age: 22 },
+    { name: "g", age: 10 },
+    { name: "h", age: 23 },
+    { name: "i", age: 10 },
+    { name: "j", age: 23 },
+  ]
+  pipe(
+    groupBy(.age),
+    IO.trace("RAW"),
+  )(alphabetWithAges)
+  pipe(
+    histogramBy(.age),
+    IO.trace("AGE!"),
+  )(alphabetWithAges)
+  pipe(
+    rarestBy(.age),
+    IO.trace("RARE AGE"),
+  )(alphabetWithAges)
+  pipe(
+    rarestBy(.age),
+    IO.trace("AGE"),
+  )([{ name: "hanz", age: 33 }, { name: "franz", age: 33 }, { name: "urs", age: 100 }])
+}

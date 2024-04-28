@@ -1,0 +1,7 @@
+import { assertEquals, test } from "Test"
+
+import { emphasis } from "./Temp2"
+
+
+
+test("emphasis coverage", () => assertEquals("coverage" ++ emphasis(5), "coverage!!!!!"))

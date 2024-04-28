@@ -1,0 +1,7 @@
+import { assertEquals, test } from "Test"
+
+import { record } from "./Temp"
+
+
+
+test("record coverage", () => assertEquals("coverage" ++ record.emphasis(5), "coverage!!!!!"))

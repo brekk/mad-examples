@@ -1,1 +1,5 @@
 build
+.repl
+.tests
+.coverage
+.DS_Store

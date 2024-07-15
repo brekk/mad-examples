@@ -1,0 +1,28 @@
+import IO from "IO"
+import List from "List"
+import Random from "Random"
+import String from "String"
+
+
+
+main = () => {
+  seed = Random.generateFromString("my-seed")
+  pipe(
+    IO.pTrace("hollaback"),
+    String.split("a"),
+    IO.pTrace("split!"),
+    Random.shuffle($, seed),
+    IO.pTrace("shuffled!"),
+    List.sort,
+    IO.pTrace("sorted!"),
+  )("bananas")
+  pipe(
+    IO.pTrace("alpha"),
+    String.split(""),
+    IO.pTrace("alpha split"),
+    Random.shuffle($, seed),
+    IO.pTrace("alpha shuffled"),
+    List.sort,
+    IO.pTrace("alpha sorted"),
+  )("thequickbrownfoxjumpsoverthelazydog")
+}

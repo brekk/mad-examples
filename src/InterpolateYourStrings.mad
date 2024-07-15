@@ -1,0 +1,11 @@
+import IO from "IO"
+
+
+
+a = `
+aaaaaaa`
+b = `\nbbbbbb\b`
+c = `    ${b}  `
+main = () => {
+  IO.put(`${a}${b}${c}`)
+}

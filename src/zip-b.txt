@@ -5,4 +5,4 @@ delta
 epsilon
 zeta
 eta
-thea
+theta

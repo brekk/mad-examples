@@ -1,5 +1,6 @@
 import Ap from "Applicative"
 import File from "File"
+import Fn from "Function"
 import IO from "IO"
 import List from "List"
 import { Just, Nothing } from "Maybe"
@@ -10,11 +11,12 @@ import Wish from "Wish"
 
 traceDrop :: Show a => String -> a -> {}
 traceDrop = (tag, x) => {
-  IO.trace(tag, x)
+  IO.log(tag)
+  IO.cLog(x)
 }
 
 isntEmpty :: String -> Boolean
-isntEmpty = (x) => !String.isEmpty(x)
+isntEmpty = Fn.complement(String.isEmpty)
 
 cleanLines :: String -> List String
 cleanLines = pipe(

@@ -1,0 +1,37 @@
+import IO from "IO"
+
+/*
+
+# imports
+
+## standard
+
+    import X from "ThirdPartyOrStdLib"
+    import { someFunction } from "ThirdPartyOrStdLib"
+
+## relative
+
+    import X from "../relative/pathing/File"
+    import { someFunction } from "../relative/pathing/File"
+
+## aliased imports
+
+via importAliases in `madlib.json`
+
+    import X from "@/File"
+    import { someFunction } from "@/File"
+
+*/
+
+import Alias from "@/Alias"
+import AliasDir from "@/AliasDir"
+import AliasDir2 from "@/AliasDir/Main"
+
+
+
+main = () => {
+  IO.pTrace("aliased import", Alias.value)
+  // this doesn't resolve
+  // IO.pTrace("main!", AliasDir.value)
+  IO.pTrace("main!", AliasDir2.value)
+}

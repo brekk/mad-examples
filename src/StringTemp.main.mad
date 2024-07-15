@@ -1,0 +1,7 @@
+import IO from "IO"
+
+
+
+main = () => {
+  IO.pTrace("failure", "A\uD83C\uDE00BC")
+}

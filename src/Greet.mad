@@ -1,5 +1,32 @@
-greet :: String -> String -> String
-export greet = (expression, subject) => (
-  `${expression} ${subject == "Unknown" ? "Stranger" : subject}`
-)
+import IO from "IO"
+import String from "String"
 
+
+
+type Person = Friend(String) | Aquaintance(String) | Stranger
+
+appendStringWithDelimeter = (d, s, x) => `${x}${d}${s}`
+emote = appendStringWithDelimeter(" ")
+
+greet :: String -> Person -> String
+greet = (expression, subject) => pipe(
+  where {
+    Friend(x) =>
+      emote("😎", IO.green(x))
+
+    Aquaintance(x) =>
+      IO.yellow(x)
+
+    Stranger =>
+      IO.red("Stranger")
+  },
+  (person) => `${expression} ${person}`,
+)(subject)
+
+
+main = () => {
+  pipe(
+    map(greet("Aloha")),
+    IO.log,
+  )([Friend("Arnaud"), Friend("Jimmy"), Stranger, Aquaintance("Mr. Chester")])
+}

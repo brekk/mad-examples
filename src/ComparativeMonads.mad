@@ -1,0 +1,58 @@
+type Thingie = Thingie(Integer)
+
+instance Comparable Thingie {
+  compare = (a, b) => where(#[a, b]) {
+    #[Thingie(c), Thingie(d)] =>
+      c == d ? EQ : c > d ? LT : GT
+  }
+}
+derive Comparable Thingie
+
+thingieMain = () => {
+  a = Thingie(5)
+  b = Thingie(10)
+  c = Thingie(10)
+  IO.pTrace(`${show(a)} < ${show(b)} ?`, a < b)
+  IO.pTrace(`${show(a)} == ${show(b)} ?`, a == b)
+  IO.pTrace(`${show(b)} <= ${show(c)} ?`, b <= c)
+  IO.pTrace(`${show(b)} == ${show(c)} ?`, b == c)
+  IO.pTrace(`${show(a)} > ${show(b)} ?`, a > b)
+  IO.pTrace(`${show(a)} > ${show(c)} ?`, a > c)
+  IO.pTrace(`${show(c)} < ${show(a)} ?`, c > a)
+}
+
+import { EQ, GT, LT } from "Compare"
+import IO from "IO"
+import List from "List"
+
+
+
+type EvenBiased = Even(Integer)
+
+isEven = (x) => x % 2 == 0
+
+evenBiasedSort = (a, b) => where(#[a, b]) {
+  #[Even(c), Even(d)] =>
+    if (isEven(c) || !isEven(d)) {
+      c == d ? EQ : LT
+    } else {
+      GT
+    }
+}
+instance Comparable EvenBiased {
+  compare = evenBiasedSort
+}
+
+main = () => {
+  pipe(
+    map(Even),
+    List.sortBy(evenBiasedSort),
+    IO.pTrace("SORTED EVENS?"),
+  )(List.range(0, 30))
+
+  pipe(
+    map(Even),
+    List.sort,
+    IO.pTrace("SORTED EVENS?"),
+  )(List.range(0, 30))
+}

@@ -34,8 +34,8 @@ export groupBy = (pred, list) => List.reduce(
 countValues :: Dictionary a (List b) -> Dictionary a Integer
 countValues = Dict.mapWithKey((key, value) => List.length(value))
 
-histogramBy :: Comparable b => (a -> b) -> List a -> Dictionary b Integer
-histogramBy = (pred, xs) => pipe(
+distributionBy :: Comparable b => (a -> b) -> List a -> Dictionary b Integer
+distributionBy = (pred, xs) => pipe(
   groupBy(pred),
   countValues,
 )(xs)
@@ -60,19 +60,14 @@ rarestBy = (pred, list) => pipe(
       List.nth(0),
       IO.trace("WHAT?"),
       map(Tuple.snd),
-      // (v) => pipe(
-      //   List.filter(
-      //     pipe(
-      //       Tuple.snd,
-      //       Fn.equals(v),
-      //     ),
-      //   )(lx),
-      // )
-
-
-
-
-
+      (v) => pipe(
+        List.filter(
+          pipe(
+            Tuple.snd,
+            Fn.equals(v),
+          ),
+        )(lx),
+      ),
     )(lx),
   )(dx),
 )(list)
@@ -84,26 +79,26 @@ main = () => {
     { name: "c", age: 10 },
     { name: "d", age: 21 },
     { name: "e", age: 10 },
-    { name: "f", age: 22 },
-    { name: "g", age: 10 },
+    { name: "f", age: 21 },
+    { name: "g", age: 23 },
     { name: "h", age: 23 },
     { name: "i", age: 10 },
     { name: "j", age: 23 },
   ]
   pipe(
     groupBy(.age),
-    IO.trace("RAW"),
+    IO.trace("GROUPED BY AGE!"),
   )(alphabetWithAges)
   pipe(
-    histogramBy(.age),
-    IO.trace("AGE!"),
-  )(alphabetWithAges)
-  pipe(
-    rarestBy(.age),
-    IO.trace("RARE AGE"),
+    distributionBy(.age),
+    IO.trace("DISTRIBUTION BY AGE!"),
   )(alphabetWithAges)
   pipe(
     rarestBy(.age),
-    IO.trace("AGE"),
+    IO.trace("RAREST BY AGE"),
+  )(alphabetWithAges)
+  pipe(
+    rarestBy(.age),
+    IO.trace("RAREST GERMAN NAME"),
   )([{ name: "hanz", age: 33 }, { name: "franz", age: 33 }, { name: "urs", age: 100 }])
 }

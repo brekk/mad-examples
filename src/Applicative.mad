@@ -6,34 +6,44 @@ import { Just, Nothing } from "Maybe"
 
 
 main = () => {
+  div = (a, b) => a / b
   pipe(
     ap(Just((a) => a + 30)),
+    // Just(130)
     IO.trace("OH YEAH"),
   )(Just(100))
 
-  h1 = Just(11)
-  h2 = Just(120)
-  h3 = Just(1200)
+  h1 = Just(8)
+  h2 = Just(16)
+  h3 = Just(32)
+
+  g1 = show(h1)
+  g2 = show(h2)
+  g3 = show(h3)
 
   pipe(
-    map((a, b) => a + b),
+    map(div),
     ap($, h3),
-    IO.trace("a + b"),
+    IO.trace(`map(div) | ap(${g1}, ${g3})`),
   )(h1)
+  // Just(1 / 4)
 
   pipe(
-    map((a, b) => a + b),
-    Fn.flip(ap)(h3),
-    IO.trace("a + b with flip(ap)"),
-  )(h1)
+    map(div),
+    Fn.flip(ap)(h1),
+    IO.trace(`map(div) | ap(${g1}, ${g3})`),
+  )(h3)
+  // Just(4)
 
   pipe(
-    liftA2((a, b) => a + b, h2),
-    IO.trace("LIFT A2 (h1 + h2)"),
+    liftA2(div, h2),
+    IO.trace(`liftA2(div)(${g1}, ${g2})`),
   )(h1)
+  // Just(2)
 
   pipe(
-    liftA2((a, b) => a + b, h2),
-    IO.trace("LIFT A2 (Nothing + h2)"),
+    liftA2(div, h2),
+    IO.trace(`liftA2(add)(Nothing, ${g2})`),
   )(Nothing)
+  // Nothing
 }

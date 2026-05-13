@@ -1,0 +1,16 @@
+import IO from "IO"
+
+
+
+main = () => {
+  _underscores = "failure"
+  IO.pTrace("no wrap", mappend("no ", _underscores))
+  IO.pTrace("record wrap", { _underscores })
+
+  interior_under = "fail"
+  IO.pTrace("interior, no wrap", mappend("no ", interior_under))
+  IO.pTrace("interior, record wrap", { interior_under })
+
+  noUnderscore = "check"
+  IO.pTrace("underscores?", { noUnderscore })
+}

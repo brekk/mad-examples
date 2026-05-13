@@ -1,0 +1,17 @@
+import List from "List"
+import Set from "Set"
+
+
+
+type Wrapped = Wrapped(Integer)
+
+under = (x) => x < 5
+
+main = () => {
+  pipe(
+    List.concat(List.range(0, 10)),
+    map(Wrapped),
+    Set.fromList,
+    List.filter(under),
+  )(List.range(5, 15))
+}

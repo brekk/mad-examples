@@ -1,0 +1,29 @@
+import { Left, Right } from "Either"
+import IO from "IO"
+import { Just, Nothing } from "Maybe"
+
+
+
+type Yo = Yo(String)
+
+main = () => {
+  hey = Just(Yo("hello"))
+  pipe(
+    where {
+      Just(Yo(name)) =>
+        do {
+          ref = name
+          set = (x) => {
+            ref := x
+          }
+          get = () => name
+          return Just({ get, set })
+          // return Right({ get })
+        }
+
+      _ =>
+        Nothing
+    },
+    IO.pTrace("getset jetsetter"),
+  )(hey)
+}

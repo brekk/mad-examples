@@ -1,0 +1,24 @@
+import Fn from "Function"
+import IO from "IO"
+import Wish from "Wish"
+
+
+
+main = () => {
+  a = Wish.bad(111)
+  b = Wish.good(420)
+  pipe(
+    map((_, y) => y),
+    ap($, b),
+    Wish.fulfill(
+      pipe(
+        IO.pTrace("BAD"),
+        Fn.noop,
+      ),
+      pipe(
+        IO.pTrace("GOOD"),
+        Fn.noop,
+      ),
+    ),
+  )(a)
+}

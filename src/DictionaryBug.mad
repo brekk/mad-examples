@@ -1,0 +1,18 @@
+alpha = {
+  careers: {{
+    "a": "ASTRONAUT",
+    "b": "BEAST",
+    "c": "COSMONAUT",
+    // "d": "DEVIL",
+    "e": "ENGINEER",
+    "f": "FIREFIGHTER",
+    "g": "GHOST",
+  }},
+}
+// "d": "DEVIL",
+
+
+
+
+
+main = () => {}

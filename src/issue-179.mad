@@ -1,0 +1,10 @@
+import IO from "IO"
+
+
+
+#- import { delimiter as slash } from "node:path" -#
+main = () => {
+  IO.pTrace(">>>", #- slash -#)
+  joined = #- "x" + slash + "a" -#
+  IO.pTrace(">->", joined)
+}

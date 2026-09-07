@@ -1,0 +1,3 @@
+[submodule "mad-docs"]
+	path = mad-docs
+	url = https://github.com/brekk/mad-docs.git

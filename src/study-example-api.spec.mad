@@ -1,0 +1,42 @@
+import String from "String"
+import { assertEquals, test } from "Test"
+
+import Study from "Study"
+
+import ExampleAPI from "@/study-example-api"
+
+
+
+test(
+  "this has multiple failures, but only one will win",
+  () => do {
+    _ <- assertEquals(true, true)
+    _ <- assertEquals(1, 100)
+    _ <- assertEquals(true, true)
+    return assertEquals(true, false)
+  },
+)
+test(
+  "xJoin traditional, failing hidden test",
+  () => {
+    assertEquals(true, false)
+    return assertEquals(ExampleAPI.xJoin(String.words("a b x y z")), "!a|b|x|y|z~~")
+  },
+)
+test(
+  "xJoin traditional",
+  () => do {
+    _ <- assertEquals(ExampleAPI.xJoin(String.words("six fix nix")), "<six|fix|nix~~")
+    return assertEquals(ExampleAPI.xJoin(String.words("a b x y z")), "!a|b|x|y|z~~")
+  },
+)
+Study.report(
+  ExampleAPI.xJoin,
+  "xJoin",
+  [
+    #[String.words("a bra cadabra"), "<a|bra|cadabra>"],
+    #[String.words("xavier xim xibble"), "!xavier|xim|xibble!"],
+    #[String.words("six fix nix"), "<six|fix|nix~~"],
+    #[String.words("a b x y z"), "!a|b|x|y|z~~"],
+  ],
+)

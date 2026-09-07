@@ -1,0 +1,31 @@
+import ByteArray from "ByteArray"
+import { Header } from "Http"
+import { Nothing } from "Maybe"
+
+import { create, get, post, run } from "MadServer"
+
+
+
+main :: List String -> {}
+main = () => {
+  pipe(
+    create,
+    post(
+      "/",
+      (req) => of({
+        body: ByteArray.fromString(`post data: ${ByteArray.toString(req.body)}`),
+        headers: [Header("Content-Type", "text/html")],
+        status: 402,
+      }),
+    ),
+    get(
+      "/",
+      (req) => of({
+        body: ByteArray.fromString("<h1>Hello</h1>"),
+        headers: [Header("Content-Type", "text/html")],
+        status: 200,
+      }),
+    ),
+    run(3000),
+  )({ verbose: true, ssl: Nothing })
+}

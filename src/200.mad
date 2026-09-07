@@ -1,0 +1,24 @@
+import IO from "IO"
+import List from "List"
+import Wish from "Wish"
+
+
+
+processFlagState = (x, y, z) => z
+State = { INITIAL_STATE: "whatever" }
+captureTheFlag = (x) => x
+parseArgs = (x) => x
+fillfull = IO.pTrace
+main = (args) => {
+  pipe(
+    List.drop(1),
+    parseArgs,
+    // yoyo 
+    // yoyo 
+    // yoyo 
+    /*
+            * test
+                        // */
+    fillfull("bad"),
+  )(args)
+}

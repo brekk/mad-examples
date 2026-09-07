@@ -1,15 +1,22 @@
+import { toInteger } from "Float"
 import IO from "IO"
 import List from "List"
 import Math from "Math"
 import Number from "Number"
-import { toInteger } from "Float"
+
+
 
 collatzStep :: Integer -> Integer
 collatzStep = (x) => (Math.mod(x, 2) != 0 ? 3 * x + 1 : toInteger(x / 2))
-
 collatz :: Integer -> List Integer
-collatz = (step) => (step == 1 ? [1] : [step, ...collatz(collatzStep(step))])
-
+collatz = (reallyLongVariableNameBecauseICan) => (
+  reallyLongVariableNameBecauseICan == 1
+    ? [1]
+    : [
+      reallyLongVariableNameBecauseICan,
+      ...collatz(collatzStep(reallyLongVariableNameBecauseICan)),
+    ]
+)
 main = () => {
   hail = #- Math.round(Math.random() * 1e10) -#
   // hail = 17

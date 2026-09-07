@@ -1,0 +1,19 @@
+{
+  "lockfileVersion": 1,
+  "packages": {
+    "https://github.com/brekk/study/archive/refs/tags/v0.0.4.zip": {
+      "buildHash": "4883b50ce92ea45e7a8868357b1ac391",
+      "dependencies": [],
+      "name": "study",
+      "version": "0.0.4",
+      "versionHash": "7fc0736e9881a23aacf4ad5e67bf1863"
+    },
+    "https://github.com/madlib-lang/madserver/archive/refs/tags/v3.1.1.zip": {
+      "buildHash": "d4eb0fb1a32b64c6529bff20d2227223",
+      "dependencies": [],
+      "name": "MadServer",
+      "version": "3.1.1",
+      "versionHash": "273938480b0d0758f28215e02bd0a0f9"
+    }
+  }
+}

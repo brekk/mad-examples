@@ -1,11 +1,7 @@
-import String from "String"
+import IO from "IO"
 
 
 
-untested :: Integer -> String
-untested = (y) => show(y) ++ "!"
-
-emphasis :: Integer -> String
-emphasis = String.repeat('!')
-
-export record = { emphasis, untested }
+main = () => {
+  IO.pTrace("failure", "A\uD83C\uDE00BC")
+}

@@ -1,0 +1,16 @@
+import Fn from "Function"
+import List from "List"
+import String from "String"
+
+
+
+magicJoin :: String -> List String -> String
+export magicJoin = (magic, xs) => {
+  match = List.any(String.startsWith(magic), xs)
+  match2 = List.any(String.endsWith(magic), xs)
+  tail = match2 ? "~" : ""
+  a = match ? "!" : "<"
+  z = match && !match2 ? "!" : match2 ? "~" : ">"
+  return a ++ String.join("|", xs) ++ z ++ tail
+}
+export xJoin = magicJoin("x")

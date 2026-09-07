@@ -1,0 +1,12 @@
+import Madlib from "Madlib"
+import IO from "IO"
+
+main = () => {
+dopeAssFunction :: Integer -> String -> Boolean -> String
+dopeAssFunction = (x, y, z) => show(x) ++ "<><>" ++ show(y) ++ "--" ++ show(z)
+  where (typeof dopeAssFunction) {
+    Madlib.TApp(t, x) => IO.pTrace("HEY", #[show(t), show(x)])
+    Madlib.TVar(x) => IO.pTrace("VARVAR", #["", show(x)])
+    _ => IO.pTrace("OTHER", #["", ""])
+  }
+}

@@ -3,3 +3,5 @@ build
 .tests
 .coverage
 .DS_Store
+madlib_modules
+.module_cache

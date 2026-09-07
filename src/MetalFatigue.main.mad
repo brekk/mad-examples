@@ -1,0 +1,10 @@
+import IO from "IO"
+
+import M from "./MetalFatigue"
+
+
+
+main = () => {
+  IO.pTrace("FAILURE_CASE", M.FAILURE_CASE)
+  IO.pTrace("UPSTREAM MUTATION?", M.NUMBERS_AND_WORDS)
+}

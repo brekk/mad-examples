@@ -1,0 +1,115 @@
+import type { Either } from "Either"
+
+import File from "File"
+import Fn from "Function"
+import IO from "IO"
+import { decode } from "Json"
+import JP from "Json/Parse"
+import Print from "Json/Print"
+import Wish from "Wish"
+
+
+
+type Stuff = Ephemeral(String) | Physical(Float, String) | MagicSingleton
+stuffFromTag = (x) => if (x == "Physical") {
+  JP.map2(Physical, JP.field("weight", fromJson), JP.field("name", fromJson))
+} else {
+  JP.map1(Ephemeral, JP.field("name", fromJson))
+}
+instance Json Stuff {
+  fromJson = pipe(
+    JP.field("tag"),
+    chain(stuffFromTag),
+  )(JP.string)
+
+  toJson = where {
+    Physical(weight, n) =>
+      Print.object([
+        #["tag", Print.string("Physical")],
+        #["weight", Print.float(weight)],
+        #["name", Print.string(n)],
+      ])
+
+    Ephemeral(n) =>
+      Print.object([#["tag", Print.string("Ephemeral")], #["name", Print.string(n)]])
+
+    MagicSingleton =>
+      Print.object([#["tag", Print.string("MagicSingleton")]])
+  }
+}
+type Person = Person(String, Integer, List Stuff)
+name = where {
+  Person(x, _, _) =>
+    x
+}
+age = where {
+  Person(_, x, _) =>
+    x
+}
+stuff = where {
+  Person(_, _, x) =>
+    x
+}
+instance Json Person {
+  fromJson = JP.map3(
+    Person,
+    JP.field("name", fromJson),
+    JP.field("age", fromJson),
+    JP.field("stuff", fromJson),
+  )
+
+  toJson = personToJson
+}
+personToJson = (x) => Print.object([
+  #[
+    "name",
+    pipe(
+      name,
+      Print.string,
+    )(x),
+  ],
+  #[
+    "age",
+    pipe(
+      age,
+      Print.integer,
+    )(x),
+  ],
+  #[
+    "stuff",
+    pipe(
+      stuff,
+      Print.list(toJson),
+    )(x),
+  ],
+])
+birth = Person
+personReader :: String -> Either String Person
+personReader = decode
+runrunrun = Wish.fulfill(
+  pipe(
+    IO.pTrace("bad"),
+    Fn.always({}),
+  ),
+  pipe(
+    IO.pTrace("good"),
+    Fn.always({}),
+  ),
+)
+readJsonAndParseIt = pipe(
+  File.read,
+  map(personReader),
+)
+main = () => {
+  jimmy = birth("Jimmy", 10, [Physical(1.03, "donut"), Ephemeral("spirit")])
+  // PRINT JIMMY AS A JSON
+  // IO.put(Print.printJson(1000000, toJson(jimmy)))
+
+  // PRINT JIMMY
+  IO.pTrace("JIMMY", jimmy)
+  // READ A JSON, GET A JIMMY
+  pipe(
+    readJsonAndParseIt,
+    runrunrun,
+  )("./src/JsonType.example.json")
+}

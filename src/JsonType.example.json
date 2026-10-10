@@ -1,0 +1,9 @@
+{
+  "age": 10,
+  "name": "Jimmy",
+  "stuff": [
+    { "name": "donut", "tag": "Physical", "weight": 1.03 },
+    { "name": "spirit", "tag": "Ephemeral" }
+  ]
+}
+

@@ -1,0 +1,23 @@
+import IO from "IO"
+import Json from "Json"
+import JP from "Json/Parse"
+import Print from "Json/Print"
+
+
+
+alias Person = { age :: Integer, name :: String }
+instance Json Person {
+  fromJson = JP.map2(
+    (name, age) => ({ name, age }),
+    JP.field("name", fromJson),
+    JP.field("age", fromJson),
+  )
+
+  toJson = (p) => Print.object([#["name", Print.string(p.name)], #["age", Print.integer(p.age)]])
+}
+birth = (age, name) => ({ age, name })
+main = () => {
+  jimmy = birth("Jimmy", 10)
+  IO.pTrace("JIMMY", jimmy)
+  IO.pTrace("JIMMY JSON", toJson(jimmy))
+}

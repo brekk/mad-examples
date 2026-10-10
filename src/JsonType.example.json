@@ -1,9 +1,1 @@
-{
-  "age": 10,
-  "name": "Jimmy",
-  "stuff": [
-    { "name": "donut", "tag": "Physical", "weight": 1.03 },
-    { "name": "spirit", "tag": "Ephemeral" }
-  ]
-}
-
+{"age": 10, "name": "Jimmy", "stuff": [{"name": "donut", "tag": "Physical", "weight": 1.03}, {"name": "spirit", "tag": "Ephemeral"}, {"tag": "MagicSingleton"}, {"name": "ideas", "tag": "Ephemeral"}, {"name": "rocks", "tag": "Physical", "weight": 5}]}

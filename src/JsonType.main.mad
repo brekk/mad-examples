@@ -13,8 +13,10 @@ import Wish from "Wish"
 type Stuff = Ephemeral(String) | Physical(Float, String) | MagicSingleton
 stuffFromTag = (x) => if (x == "Physical") {
   JP.map2(Physical, JP.field("weight", fromJson), JP.field("name", fromJson))
-} else {
+} else if (x == "Ephemeral") {
   JP.map1(Ephemeral, JP.field("name", fromJson))
+} else {
+  JP.succeed(MagicSingleton)
 }
 instance Json Stuff {
   fromJson = pipe(
@@ -84,6 +86,7 @@ personToJson = (x) => Print.object([
   ],
 ])
 birth = Person
+// this annotation is required, otherwise the downstream `readJsonAndParseIt` cannot determine the correct type
 personReader :: String -> Either String Person
 personReader = decode
 runrunrun = Wish.fulfill(
@@ -100,16 +103,26 @@ readJsonAndParseIt = pipe(
   File.read,
   map(personReader),
 )
+readExampleAndParse = () => pipe(
+  readJsonAndParseIt,
+  runrunrun,
+)("./src/JsonType.example.json")
 main = () => {
-  jimmy = birth("Jimmy", 10, [Physical(1.03, "donut"), Ephemeral("spirit")])
+  jimmy = birth(
+    "Jimmy",
+    10,
+    [
+      Physical(1.03, "donut"),
+      Ephemeral("spirit"),
+      MagicSingleton,
+      Ephemeral("ideas"),
+      Physical(5, "rocks"),
+    ],
+  )
   // PRINT JIMMY AS A JSON
   // IO.put(Print.printJson(1000000, toJson(jimmy)))
-
   // PRINT JIMMY
   IO.pTrace("JIMMY", jimmy)
   // READ A JSON, GET A JIMMY
-  pipe(
-    readJsonAndParseIt,
-    runrunrun,
-  )("./src/JsonType.example.json")
+  readExampleAndParse()
 }
